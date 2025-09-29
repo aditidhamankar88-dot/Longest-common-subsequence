@@ -1,0 +1,37 @@
+#include <stdio.h>
+#include <string.h>
+
+int max(int a, int b) {
+    return (a > b) ? a : b;
+}
+
+int LRS(char* str) {
+    int n = strlen(str);
+    int dp[n+1][n+1];
+
+    // Initialize dp table
+    for (int i = 0; i <= n; i++) {
+        for (int j = 0; j <= n; j++) {
+            dp[i][j] = 0;
+        }
+    }
+
+    // Fill dp table
+    for (int i = 1; i <= n; i++) {
+        for (int j = 1; j <= n; j++) {
+            if (str[i-1] == str[j-1] && i != j) {
+                dp[i][j] = 1 + dp[i-1][j-1];
+            } else {
+                dp[i][j] = max(dp[i-1][j], dp[i][j-1]);
+            }
+        }
+    }
+
+    return dp[n][n];  // Length of LRS
+}
+
+int main() {
+    char str[] = "AABCBDC";
+    printf("The length of Longest Repeating Subsequence is %d\n", LRS(str));
+    return 0;
+}
